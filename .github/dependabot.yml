@@ -1,0 +1,15 @@
+version: 2
+
+updates:
+  - package-ecosystem: pip
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: "monday"
+      time: "7:30"
+      timezone: "America/Sao_Paulo"
+    assignees:
+      - "andrequeiroz2"
+    reviewers:
+      - "andrequeiroz2"
+    open-pull-requests-limit: 15
