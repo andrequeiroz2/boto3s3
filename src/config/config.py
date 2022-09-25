@@ -7,20 +7,18 @@ load_dotenv(find_dotenv(".env"))
 
 
 class Settings(BaseSettings):
-    API_TITLE: str = os.getenv("API_TITLE")
-
+    API_TITLE = os.getenv("API_TITLE")
     HOST: str = os.getenv("HOST")
     PORT: int = int(os.getenv("PORT"))
-    LOG_LEVEL: str = os.getenv("LOG_LEVEL")
+    LOG_LEVEL = os.getenv("LOG_LEVEL")
     DEBUG: bool = os.getenv("DEBUG")
-
-    S3_AWS_DEFAULT_REGION: str = os.getenv("S3_AWS_DEFAULT_REGION")
-    S3_SIGNATURE_VERSION: str = os.getenv("S3_SIGNATURE_VERSION")
+    S3_AWS_DEFAULT_REGION = os.getenv("S3_AWS_DEFAULT_REGION")
+    S3_SIGNATURE_VERSION = os.getenv("S3_SIGNATURE_VERSION")
     S3_AWS_MAX_ATTEMPTS: int = int(os.getenv("S3_AWS_MAX_ATTEMPTS"))
-    S3_AWS_RETRY_MODE: str = os.getenv("S3_AWS_RETRY_MODE")
-    S3_AWS_ACCESS_KEY_ID: str = os.getenv("S3_AWS_ACCESS_KEY_ID")
-    S3_AWS_SECRET_ACCESS_KEY: str = os.getenv("S3_AWS_SECRET_ACCESS_KEY")
-    S3_AWS_BUCKET_NAME: str = os.getenv("S3_AWS_BUCKET_NAME")
+    S3_AWS_RETRY_MODE = os.getenv("S3_AWS_RETRY_MODE")
+    S3_AWS_ACCESS_KEY_ID = os.getenv("S3_AWS_ACCESS_KEY_ID")
+    S3_AWS_SECRET_ACCESS_KEY = os.getenv("S3_AWS_SECRET_ACCESS_KEY")
+    S3_AWS_BUCKET_NAME = os.getenv("S3_AWS_BUCKET_NAME")
 
     @root_validator(pre=False)
     def validate_all(cls, values):  # skipcq: PYL-R0201
