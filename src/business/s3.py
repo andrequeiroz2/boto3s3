@@ -1,4 +1,4 @@
-from config.s3_config import s3_client, s3_resource
+from config.s3_config import s3_client
 from schema.s3 import BucketListSchema, BucketExistSchema
 from config.config import settings
 from botocore.errorfactory import ClientError
@@ -30,6 +30,6 @@ class S3:
                 image.file,
                 settings.S3_AWS_BUCKET_NAME,
                 f"{user_guid}/{path_name}/{image.filename}")
-        except ClientError as err:
+        except ClientError:
             return False
         return True
