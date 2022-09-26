@@ -9,7 +9,7 @@ load_dotenv(find_dotenv(".env"))
 class Settings(BaseSettings):
     API_TITLE = os.getenv("API_TITLE")
     HOST: str = os.getenv("HOST")
-    PORT: int = int(os.getenv("PORT"))
+    PORT = int(os.getenv("PORT"))
     LOG_LEVEL = os.getenv("LOG_LEVEL")
     DEBUG: bool = os.getenv("DEBUG")
     S3_AWS_DEFAULT_REGION = os.getenv("S3_AWS_DEFAULT_REGION")
