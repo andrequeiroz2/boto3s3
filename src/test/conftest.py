@@ -6,9 +6,9 @@ from moto import mock_s3
 
 
 os.environ["HOST"] = "127.0.0.1"
-os.environ["PORT"] = int(6000)
+os.environ["PORT"] = "6000"
 os.environ["LOG_LEVEL"] = "debug"
-os.environ["DEBUG"] = bool(True)
+os.environ["DEBUG"] = "True"
 
 
 @pytest.fixture
