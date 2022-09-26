@@ -14,6 +14,8 @@ os.environ["S3_AWS_RETRY_MODE"] = "standard"
 os.environ["S3_AWS_BUCKET_NAME"] = "andrelinuxtips"
 os.environ["S3_AWS_BUCKET_NAME"] = "andrelinuxtips"
 os.environ["API_TITLE"] = "bucket_service"
+os.environ["S3_AWS_DEFAULT_REGION"] = "us-east-1a"
+
 
 @pytest.fixture
 def aws_credentials():
