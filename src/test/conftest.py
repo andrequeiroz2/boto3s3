@@ -9,6 +9,9 @@ os.environ["HOST"] = "127.0.0.1"
 os.environ["PORT"] = "6000"
 os.environ["LOG_LEVEL"] = "debug"
 os.environ["DEBUG"] = "True"
+os.environ["S3_AWS_MAX_ATTEMPTS"] = "5"
+os.environ["S3_AWS_RETRY_MODE"] = "standard"
+os.environ["S3_AWS_BUCKET_NAME"] = "andrelinuxtips"
 
 
 @pytest.fixture
