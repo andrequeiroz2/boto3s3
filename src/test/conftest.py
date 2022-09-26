@@ -12,9 +12,9 @@ os.environ["DEBUG"] = "True"
 os.environ["S3_AWS_MAX_ATTEMPTS"] = "5"
 os.environ["S3_AWS_RETRY_MODE"] = "standard"
 os.environ["S3_AWS_BUCKET_NAME"] = "andrelinuxtips"
-os.environ["S3_AWS_BUCKET_NAME"] = "andrelinuxtips"
 os.environ["API_TITLE"] = "bucket_service"
 os.environ["S3_AWS_DEFAULT_REGION"] = "us-east-1a"
+os.environ["S3_SIGNATURE_VERSION"] = "v4"
 
 
 @pytest.fixture
