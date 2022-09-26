@@ -1,5 +1,5 @@
 from config.s3_config import s3_client
-from schema.s3 import BucketListSchema, BucketExistSchema
+from schema.s3 import BucketListSchema, BucketExistSchema, BucketUploadSchema
 from config.config import settings
 from botocore.errorfactory import ClientError
 
@@ -24,12 +24,12 @@ class S3:
         return BucketExistSchema(is_exist=True)
 
     @staticmethod
-    async def upload_file(image, user_guid: str, path_name: str):
+    async def upload_file(image, user_guid: str, path_name: str) -> BucketUploadSchema:
         try:
             s3_client.upload_fileobj(
                 image.file,
                 settings.S3_AWS_BUCKET_NAME,
                 f"{user_guid}/{path_name}/{image.filename}")
         except ClientError:
-            return False
-        return True
+            return BucketUploadSchema(is_success=False)
+        return BucketUploadSchema(is_success=True)

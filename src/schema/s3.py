@@ -12,3 +12,7 @@ class BucketListSchema(APIModel):
 
 class BucketExistSchema(APIModel):
     is_exist: bool
+
+
+class BucketUploadSchema(APIModel):
+    is_success: bool
