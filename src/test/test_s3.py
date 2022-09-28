@@ -1,12 +1,11 @@
 import pytest
-from fastapi import UploadFile, File
-
-
 from business.s3 import S3
+from schema.s3 import BucketImageNameSchema
 
 file = {'file': open("./test/locate_thanos.jpeg", "rb")}
 user_guid = "test"
-path_name = "location"
+path_name_location = "location"
+image_name_download = BucketImageNameSchema(image_name="locate_thanos.jpeg")
 
 
 class Image(object):
@@ -38,14 +37,18 @@ async def test_list_buckets(s3_client, s3_test):
 async def test_is_exist_path():
     my_client = S3()
     result = await my_client.is_exist_path(user_guid)
-    print(result)
     assert result.is_exist is True
 
 
 @pytest.mark.asyncio
 async def test_upload_image_location():
     my_client = S3()
-    result = await my_client.upload_file(Image, user_guid, path_name)
+    result = await my_client.upload_file(Image, user_guid, path_name_location)
     assert result.is_success is True
 
 
+@pytest.mark.asyncio
+async def test_download_image_location():
+    my_client = S3()
+    result = await my_client.download_image(user_guid, path_name_location, image_name_download)
+    assert result.is_success is True
