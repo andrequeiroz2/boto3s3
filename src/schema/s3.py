@@ -14,7 +14,7 @@ class BucketExistSchema(APIModel):
     is_exist: bool
 
 
-class BucketUploadSchema(APIModel):
+class BucketIsSuccessSchema(APIModel):
     is_success: bool
 
 

@@ -1,11 +1,14 @@
 import os
 from config.s3_config import s3_client
-from schema.s3 import BucketListSchema, BucketExistSchema, BucketUploadSchema, BucketImageNameSchema
+from schema.s3 import BucketListSchema, BucketExistSchema, BucketIsSuccessSchema, BucketImageNameSchema
 from config.config import settings
 from botocore.errorfactory import ClientError
 
 
 class S3:
+
+    base_path_download = "./s3_downloads/"
+
     @staticmethod
     async def get_all() -> BucketListSchema:
         buckets_list = []
@@ -25,36 +28,49 @@ class S3:
         return BucketExistSchema(is_exist=True)
 
     @staticmethod
-    async def upload_file(image, user_guid: str, path_name: str) -> BucketUploadSchema:
+    async def upload_file(image, user_guid: str, path_name: str) -> BucketIsSuccessSchema:
         try:
             s3_client.upload_fileobj(
                 image.file,
                 settings.S3_AWS_BUCKET_NAME,
                 f"{user_guid}/{path_name}/{image.filename}")
         except ClientError:
-            return BucketUploadSchema(is_success=False)
-        return BucketUploadSchema(is_success=True)
+            return BucketIsSuccessSchema(is_success=False)
+        return BucketIsSuccessSchema(is_success=True)
 
-    async def get_image(self, user_guid: str, path: str, image_name: BucketImageNameSchema):
+    async def download_image(
+            self,
+            user_guid: str,
+            path: str, image_name: BucketImageNameSchema) -> BucketIsSuccessSchema:
 
-        client_path = f"./s3_downloads/{user_guid}/{path}"
+        if not self._isdir(self.base_path_download, user_guid, path):
+            self._create_directory(self.base_path_download, user_guid, path)
 
-        if not self._isdir(client_path):
-            os.makedirs(client_path)
+        try:
+            s3_client.download_file(
+                settings.S3_AWS_BUCKET_NAME,
+                f"{user_guid}/{path}/{image_name.image_name}",
+                f"{self.base_path_download}/{user_guid}/{path}/{image_name.image_name}"
 
-        s3_client.download_file(
-            settings.S3_AWS_BUCKET_NAME,
-            f"{user_guid}/{path}/{image_name.image_name}",
-            f"./s3_downloads/{user_guid}/{path}/{image_name.image_name}"
+            )
+        except ClientError as err:
+            raise err
 
-        )
-
-
-
-
-        # s3_client.download_file('BUCKET_NAME', 'OBJECT_NAME', 'FILE_NAME')
-        return ""
+        return BucketIsSuccessSchema(is_success=True)
 
     @staticmethod
-    def _isdir(path: str):
-        return os.path.isdir(path)
+    def _isdir(base_path_download: str, user_guid: str, path: str) -> bool:
+        client_path = f"{base_path_download}/{user_guid}/{path}"
+        try:
+            result = os.path.isdir(client_path)
+        except OSError as error:
+            raise error
+        return result
+
+    @staticmethod
+    def _create_directory(base_path_download: str, user_guid: str, path: str):
+        client_path = f"{base_path_download}/{user_guid}/{path}"
+        try:
+            os.makedirs(client_path)
+        except OSError as error:
+            raise error
