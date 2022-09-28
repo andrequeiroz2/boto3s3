@@ -1,8 +1,8 @@
 from fastapi_utils.inferring_router import InferringRouter
 from fastapi_utils.cbv import cbv
 from business.s3 import S3
-from schema.s3 import BucketListSchema, BucketExistSchema, BucketUploadSchema
-from fastapi import UploadFile
+from schema.s3 import BucketListSchema, BucketExistSchema, BucketUploadSchema, BucketImageNameSchema
+from fastapi import UploadFile, Depends
 
 s3_router = InferringRouter()
 
@@ -21,3 +21,7 @@ class S3Router:
     @s3_router.post("/{user_guid}/")
     async def post_bucket(self, image: UploadFile, path_name: str, user_guid: str) -> BucketUploadSchema:
         return await S3().upload_file(image, user_guid, path_name)
+
+    @s3_router.get("/image/{user_guid}/{path}")
+    async def get_image(self, user_guid: str, path: str, image_name: BucketImageNameSchema):
+        return await S3().get_image(user_guid, path, image_name)

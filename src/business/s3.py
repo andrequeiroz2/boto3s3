@@ -1,5 +1,6 @@
+import os
 from config.s3_config import s3_client
-from schema.s3 import BucketListSchema, BucketExistSchema, BucketUploadSchema
+from schema.s3 import BucketListSchema, BucketExistSchema, BucketUploadSchema, BucketImageNameSchema
 from config.config import settings
 from botocore.errorfactory import ClientError
 
@@ -33,3 +34,27 @@ class S3:
         except ClientError:
             return BucketUploadSchema(is_success=False)
         return BucketUploadSchema(is_success=True)
+
+    async def get_image(self, user_guid: str, path: str, image_name: BucketImageNameSchema):
+
+        client_path = f"./s3_downloads/{user_guid}/{path}"
+
+        if not self._isdir(client_path):
+            os.makedirs(client_path)
+
+        s3_client.download_file(
+            settings.S3_AWS_BUCKET_NAME,
+            f"{user_guid}/{path}/{image_name.image_name}",
+            f"./s3_downloads/{user_guid}/{path}/{image_name.image_name}"
+
+        )
+
+
+
+
+        # s3_client.download_file('BUCKET_NAME', 'OBJECT_NAME', 'FILE_NAME')
+        return ""
+
+    @staticmethod
+    def _isdir(path: str):
+        return os.path.isdir(path)

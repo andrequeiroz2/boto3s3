@@ -16,3 +16,7 @@ class BucketExistSchema(APIModel):
 
 class BucketUploadSchema(APIModel):
     is_success: bool
+
+
+class BucketImageNameSchema(APIModel):
+    image_name: str
